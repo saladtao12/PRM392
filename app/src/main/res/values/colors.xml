@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+    <color name="colorPrimary">#3E65F9</color> <!-- Xanh dương Quizlet -->
+    <color name="colorPrimaryDark">#2C4CCC</color>
+    <color name="colorAccent">#5B87FF</color>
+
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorBackground">#F0F4FF</color>
+    <color name="colorTextPrimary">#1A1A1A</color>
+    <color name="colorTextSecondary">#666666</color>
 </resources>
