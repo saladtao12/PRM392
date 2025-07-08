@@ -52,10 +52,35 @@ public class DbContext extends SQLiteOpenHelper {
                 "dap_an_chon TEXT NOT NULL," +
                 "FOREIGN KEY(bai_nop_id) REFERENCES bai_nop(id)," +
                 "FOREIGN KEY(cau_hoi_id) REFERENCES cau_hoi_theo_mon(id));");
+
+        // 1. Người dùng
         db.execSQL("INSERT INTO nguoi_dung (ten, email, mat_khau) VALUES " +
                 "('Nguyễn Văn A', 'a@gmail.com', 'a')," +
                 "('Trần Thị B', 'b@gmail.com', '123456')," +
                 "('Lê Văn C', 'c@gmail.com', '123456');");
+        // 2. Môn học
+        db.execSQL("INSERT INTO mon_hoc (ten_mon) VALUES " +
+                "('Toán')," +
+                "('Lịch sử');");
+
+        // 3. Câu hỏi cho môn Toán (id = 1)
+        db.execSQL("INSERT INTO cau_hoi_theo_mon (mon_hoc_id, noi_dung, lua_chon_a, lua_chon_b, lua_chon_c, lua_chon_d, dap_an_dung) VALUES " +
+                "(1, '2 + 2 = ?', '3', '4', '5', '6', 'B')," +
+                "(1, '5 * 3 = ?', '15', '20', '10', '8', 'A');");
+
+        // 4. Câu hỏi cho môn Lịch sử (id = 2)
+        db.execSQL("INSERT INTO cau_hoi_theo_mon (mon_hoc_id, noi_dung, lua_chon_a, lua_chon_b, lua_chon_c, lua_chon_d, dap_an_dung) VALUES " +
+                "(2, 'Ngày quốc khánh Việt Nam?', '2/9', '1/5', '30/4', '1/1', 'A')," +
+                "(2, 'Chủ tịch Hồ Chí Minh sinh năm nào?', '1890', '1900', '1885', '1895', 'A');");
+
+        // 5. Bài nộp giả lập cho user 1 làm môn Toán
+        db.execSQL("INSERT INTO bai_nop (nguoi_dung_id, mon_hoc_id, diem, ngay_nop) VALUES " +
+                "(1, 1, 10.0, '2025-07-08');");
+
+        // 6. Chi tiết bài nộp (bài_nop_id = 1)
+        db.execSQL("INSERT INTO chi_tiet_bai_nop (bai_nop_id, cau_hoi_id, dap_an_chon) VALUES " +
+                "(1, 1, 'B')," + // đúng
+                "(1, 2, 'A');");  // đúng
     }
 
     @Override
