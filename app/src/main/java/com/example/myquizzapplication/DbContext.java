@@ -52,6 +52,10 @@ public class DbContext extends SQLiteOpenHelper {
                 "dap_an_chon TEXT NOT NULL," +
                 "FOREIGN KEY(bai_nop_id) REFERENCES bai_nop(id)," +
                 "FOREIGN KEY(cau_hoi_id) REFERENCES cau_hoi_theo_mon(id));");
+        db.execSQL("INSERT INTO nguoi_dung (ten, email, mat_khau) VALUES " +
+                "('Nguyễn Văn A', 'a@gmail.com', 'a')," +
+                "('Trần Thị B', 'b@gmail.com', '123456')," +
+                "('Lê Văn C', 'c@gmail.com', '123456');");
     }
 
     @Override
