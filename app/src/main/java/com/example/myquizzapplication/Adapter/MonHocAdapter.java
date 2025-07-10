@@ -45,11 +45,11 @@ public class MonHocAdapter extends RecyclerView.Adapter<MonHocAdapter.MonHocView
 
         // Icon theo tên môn học (có thể thêm logic khác)
         if (monHoc.getTenMon().toLowerCase().contains("math")) {
-            holder.imgMonHoc.setImageResource(R.drawable.ic_math);
+//            holder.imgMonHoc.setImageResource(R.drawable.ic_math);
         } else if (monHoc.getTenMon().toLowerCase().contains("geo")) {
-            holder.imgMonHoc.setImageResource(R.drawable.ic_math);
+//            holder.imgMonHoc.setImageResource(R.drawable.ic_math);
         } else {
-            holder.imgMonHoc.setImageResource(R.drawable.ic_math);
+//            holder.imgMonHoc.setImageResource(R.drawable.ic_math);
         }
 
         holder.itemView.setOnClickListener(v -> listener.onClick(monHoc));
@@ -62,7 +62,7 @@ public class MonHocAdapter extends RecyclerView.Adapter<MonHocAdapter.MonHocView
 
     public static class MonHocViewHolder extends RecyclerView.ViewHolder {
         TextView tvTenMonHoc;
-        ImageView imgMonHoc;
+//        ImageView imgMonHoc;
 
         public MonHocViewHolder(@NonNull View itemView) {
             super(itemView);
