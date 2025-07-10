@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center_horizontal"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <!-- Avatar -->
+        <ImageView
+            android:id="@+id/avatarImage"
+            android:layout_width="189dp"
+            android:layout_height="120dp"
+            android:layout_marginBottom="24dp"
+            android:background="@drawable/img"
+            android:clipToOutline="true"
+            android:scaleType="centerCrop"
+            android:src="@drawable/img" />
+
+        <!-- Tiêu đề -->
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="Cách tốt nhất để học."
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:text="Đăng nhập hoặc đăng ký miễn phí."
+            android:textColor="#666666"
+            android:textSize="14sp" />
+
+        <!-- Nút Google -->
+
+        <!-- Input Email -->
+        <EditText
+            android:id="@+id/emailInput"
+            android:layout_width="match_parent"
+            android:layout_height="61dp"
+            android:layout_marginBottom="16dp"
+            android:background="@android:drawable/edit_text"
+            android:hint="Tên đăng nhập"
+            android:inputType="textEmailAddress"
+            android:padding="12dp" />
+
+        <!-- Input Password -->
+        <EditText
+            android:id="@+id/passwordInput"
+            android:layout_width="match_parent"
+            android:layout_height="59dp"
+            android:layout_marginBottom="24dp"
+            android:background="@android:drawable/edit_text"
+            android:hint="Mật khẩu"
+            android:inputType="textPassword"
+            android:padding="12dp" />
+
+        <!-- Nút Đăng nhập -->
+
+        <Button
+            android:id="@+id/googleSignInButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="24dp"
+            android:backgroundTint="#4285F4"
+            android:drawableLeft="@drawable/ic_gg"
+            android:text="Tiếp tục với Google"
+            android:textColor="#FFFFFF" />
+
+        <!-- Link đăng ký -->
+        <Button
+            android:id="@+id/loginButton"
+            android:layout_width="match_parent"
+            android:layout_height="58dp"
+            android:layout_marginBottom="24dp"
+            android:backgroundTint="#000000"
+            android:text="Đăng nhập"
+            android:textColor="#FFFFFF" />
+
+        <TextView
+            android:id="@+id/registerLoginText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Chưa có tài khoản? Đăng ký"
+            android:textColor="#000000"
+            android:textSize="14sp"
+            android:clickable="true"
+            android:focusable="true"
+            android:background="?attr/selectableItemBackground"
+            />
+
+    </LinearLayout>
+</ScrollView>

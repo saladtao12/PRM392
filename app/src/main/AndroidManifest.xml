@@ -13,22 +13,17 @@
         android:theme="@style/Theme.MyQuizzApplication"
         tools:targetApi="31">
         <activity
-            android:name=".ActivityRules"
-            android:exported="false" >
-        </activity>
-        <activity
-            android:name=".ActivityEditPassword"
-            android:exported="true" >
+            android:name=".MainActivity"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".MainActivity"
-            android:exported="false" >
-        </activity>
+        <activity android:name=".Register" />
+        <activity android:name=".LoginActivity" />
+
     </application>
 
 </manifest>
