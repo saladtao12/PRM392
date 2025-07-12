@@ -10,11 +10,13 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import com.example.myquizzapplication.Repository.QuestionRepository;
+import com.example.myquizzapplication.Repository.SubmissionRepository;
 import com.example.myquizzapplication.models.CauHoi;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Màn hình hiển thị câu hỏi trắc nghiệm.
+ * Màn hình hiển thị câu hỏi trắc nghiệm và lưu kết quả.
  */
 public class QuizQuestionActivity extends AppCompatActivity {
 
@@ -24,7 +26,11 @@ public class QuizQuestionActivity extends AppCompatActivity {
     private Button btnNext;
 
     private List<CauHoi> cauHoiList;
+    private String[] answersUser; // lưu đáp án người chọn
     private int currentIndex = 0;
+
+    private int monHocId;
+    private int userId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,8 +48,9 @@ public class QuizQuestionActivity extends AppCompatActivity {
         btnNext = findViewById(R.id.btnNext);
 
         // Nhận dữ liệu từ intent
-        int monHocId = getIntent().getIntExtra(QuizOptionActivity.EXTRA_MON_HOC_ID, -1);
+        monHocId = getIntent().getIntExtra(QuizOptionActivity.EXTRA_MON_HOC_ID, -1);
         String tenMon = getIntent().getStringExtra(QuizOptionActivity.EXTRA_TEN_MON);
+        userId    = getIntent().getIntExtra(QuizOptionActivity.EXTRA_USER_ID, 1);
         Log.d("QUIZ", "monHocId nhận được = " + monHocId);
 
         if (monHocId == -1) {
@@ -66,22 +73,38 @@ public class QuizQuestionActivity extends AppCompatActivity {
         cauHoiList = repo.getQuestionsByMonHocId(monHocId);
         Log.d("QUIZ", "Số câu hỏi lấy được = " + cauHoiList.size());
 
-        if (!cauHoiList.isEmpty()) {
-            showQuestion(currentIndex);
-        } else {
+        if (cauHoiList.isEmpty()) {
             Toast.makeText(this, "Không có câu hỏi!", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
         }
+
+        answersUser = new String[cauHoiList.size()];
+        showQuestion(currentIndex);
 
         // Xử lý nút Next
         btnNext.setOnClickListener(v -> {
+            // Lưu đáp án vừa chọn
+            answersUser[currentIndex] = getSelectedAnswer();
+
             currentIndex++;
             if (currentIndex < cauHoiList.size()) {
                 showQuestion(currentIndex);
             } else {
-                Toast.makeText(this, "Đã hết câu hỏi!", Toast.LENGTH_SHORT).show();
-                finish();
+                // Tính điểm & lưu DB
+                saveResultAndFinish();
             }
         });
+    }
+
+    /** lấy ký tự A/B/C/D tương ứng radio đã chọn; trả "" nếu chưa chọn */
+    private String getSelectedAnswer() {
+        int checkedId = rgDapAn.getCheckedRadioButtonId();
+        if (checkedId == R.id.rbA) return "A";
+        if (checkedId == R.id.rbB) return "B";
+        if (checkedId == R.id.rbC) return "C";
+        if (checkedId == R.id.rbD) return "D";
+        return ""; // bỏ qua nếu chưa chọn
     }
 
     /**
@@ -96,5 +119,23 @@ public class QuizQuestionActivity extends AppCompatActivity {
         rbD.setText("D. " + q.getLuaChonD());
         rgDapAn.clearCheck();
         tvSoThuTu.setText("Current Question: " + (index + 1) + "/" + cauHoiList.size());
+    }
+
+    /** Tính điểm, lưu DB và thông báo */
+    private void saveResultAndFinish() {
+        int correct = 0;
+        for (int i = 0; i < cauHoiList.size(); i++) {
+            if (cauHoiList.get(i).getDapAnDung().equalsIgnoreCase(answersUser[i])) {
+                correct++;
+            }
+        }
+        double score = correct; // mỗi câu 1 điểm – tuỳ chỉnh
+
+        // Lưu vào DB
+        SubmissionRepository subRepo = new SubmissionRepository(this);
+        subRepo.saveSubmission(userId, monHocId, score, cauHoiList, answersUser);
+
+        Toast.makeText(this, "Bạn đúng " + correct + "/" + cauHoiList.size() + " – Điểm: " + score, Toast.LENGTH_LONG).show();
+        finish();
     }
 }
