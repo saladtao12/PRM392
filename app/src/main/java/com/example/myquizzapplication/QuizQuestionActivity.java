@@ -1,15 +1,21 @@
 package com.example.myquizzapplication;
 
 import android.os.Bundle;
-import android.widget.*;
+import android.util.Log;
+import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
 import com.example.myquizzapplication.Repository.QuestionRepository;
 import com.example.myquizzapplication.models.CauHoi;
-
 import java.util.List;
 
+/**
+ * Màn hình hiển thị câu hỏi trắc nghiệm.
+ */
 public class QuizQuestionActivity extends AppCompatActivity {
 
     private TextView tvCauHoi, tvSoThuTu;
@@ -25,6 +31,7 @@ public class QuizQuestionActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz_question);
 
+        // Ánh xạ view
         tvCauHoi = findViewById(R.id.tvCauHoi);
         tvSoThuTu = findViewById(R.id.tvSoThuTu);
         rbA = findViewById(R.id.rbA);
@@ -34,24 +41,38 @@ public class QuizQuestionActivity extends AppCompatActivity {
         rgDapAn = findViewById(R.id.rgDapAn);
         btnNext = findViewById(R.id.btnNext);
 
-        int monHocId = getIntent().getIntExtra("monHocId", -1);
-        String tenMon = getIntent().getStringExtra("tenMon");
+        // Nhận dữ liệu từ intent
+        int monHocId = getIntent().getIntExtra(QuizOptionActivity.EXTRA_MON_HOC_ID, -1);
+        String tenMon = getIntent().getStringExtra(QuizOptionActivity.EXTRA_TEN_MON);
+        Log.d("QUIZ", "monHocId nhận được = " + monHocId);
 
+        if (monHocId == -1) {
+            Toast.makeText(this, "Không tìm thấy môn học", Toast.LENGTH_SHORT).show();
+            finish();
+            return;
+        }
+
+        // Toolbar
         Toolbar toolbar = findViewById(R.id.toolbarQuestion);
-        toolbar.setTitle(tenMon + " Quiz");
+        toolbar.setTitle((tenMon == null ? "Quiz" : tenMon + " Quiz"));
         setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        toolbar.setNavigationOnClickListener(view -> finish());
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+        toolbar.setNavigationOnClickListener(v -> finish());
 
+        // Lấy câu hỏi
         QuestionRepository repo = new QuestionRepository(this);
         cauHoiList = repo.getQuestionsByMonHocId(monHocId);
+        Log.d("QUIZ", "Số câu hỏi lấy được = " + cauHoiList.size());
 
-        if (cauHoiList.size() > 0) {
+        if (!cauHoiList.isEmpty()) {
             showQuestion(currentIndex);
         } else {
             Toast.makeText(this, "Không có câu hỏi!", Toast.LENGTH_SHORT).show();
         }
 
+        // Xử lý nút Next
         btnNext.setOnClickListener(v -> {
             currentIndex++;
             if (currentIndex < cauHoiList.size()) {
@@ -63,6 +84,9 @@ public class QuizQuestionActivity extends AppCompatActivity {
         });
     }
 
+    /**
+     * Hiển thị câu hỏi theo index.
+     */
     private void showQuestion(int index) {
         CauHoi q = cauHoiList.get(index);
         tvCauHoi.setText(q.getNoiDung());
@@ -71,6 +95,6 @@ public class QuizQuestionActivity extends AppCompatActivity {
         rbC.setText("C. " + q.getLuaChonC());
         rbD.setText("D. " + q.getLuaChonD());
         rgDapAn.clearCheck();
-        tvSoThuTu.setText("Current Question: " + (index + 1));
+        tvSoThuTu.setText("Current Question: " + (index + 1) + "/" + cauHoiList.size());
     }
 }

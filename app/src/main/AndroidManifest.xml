@@ -26,7 +26,8 @@
         <activity android:name=".QuizOptionActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
-
+        <activity android:name=".QuizQuestionActivity"
+            android:exported="false" />
     </application>
 
 </manifest>

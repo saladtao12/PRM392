@@ -16,7 +16,8 @@ import com.example.myquizzapplication.models.MonHoc;
 import java.util.List;
 
 public class QuizOptionActivity extends AppCompatActivity {
-
+    public static final String EXTRA_MON_HOC_ID = "mon_hoc_id";
+    public static final String EXTRA_TEN_MON    = "ten_mon";
     private RecyclerView rvMonHoc;
     private CourseRepository repository;
 
@@ -39,8 +40,8 @@ public class QuizOptionActivity extends AppCompatActivity {
         MonHocAdapter adapter = new MonHocAdapter(this, monHocList, monHoc -> {
             // Khi click vào môn học => sang màn hình câu hỏi
             Intent intent = new Intent(QuizOptionActivity.this, QuizQuestionActivity.class);
-            intent.putExtra("monHocId", monHoc.getId());
-            intent.putExtra("tenMon", monHoc.getTenMon());
+            intent.putExtra(EXTRA_MON_HOC_ID, monHoc.getId());   // truyền đúng key hằng số
+            intent.putExtra(EXTRA_TEN_MON,    monHoc.getTenMon());
             startActivity(intent);
         });
 
