@@ -22,9 +22,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".Register" />
-        <activity android:name=".LoginActivity" />
+        <activity android:name=".MainActivity" />
+        <activity android:name=".BaiNopActivity" />
         <activity android:name=".QuizOptionActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".HistoryActivity" />
 
         <activity android:name=".QuizQuestionActivity"
             android:exported="false" />

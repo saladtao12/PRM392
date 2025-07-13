@@ -1,6 +1,7 @@
 package com.example.myquizzapplication;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -12,9 +13,20 @@ public class DbContext extends SQLiteOpenHelper {
     public DbContext(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
+    public Cursor rawQuery(String query, String[] args) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        return db.rawQuery(query, args);
+    }
 
     @Override
+
     public void onCreate(SQLiteDatabase db) {
+        db.execSQL("CREATE TABLE nguoi_dung (" +
+                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                "ten TEXT NOT NULL," +
+                "email TEXT UNIQUE NOT NULL," +
+                "mat_khau TEXT NOT NULL);");
+
         db.execSQL("CREATE TABLE nguoi_dung (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "ten TEXT NOT NULL," +
@@ -79,6 +91,10 @@ public class DbContext extends SQLiteOpenHelper {
 
         // 6. Chi tiết bài nộp (bài_nop_id = 1)
         db.execSQL("INSERT INTO chi_tiet_bai_nop (bai_nop_id, cau_hoi_id, dap_an_chon) VALUES " +
+                "(1, 1, 'B')," + // đúng
+                "(1, 2, 'A');");  // đúng
+
+        db.execSQL("INSERT INTO bai_nop (bai_nop_id, cau_hoi_id, dap_an_chon) VALUES " +
                 "(1, 1, 'B')," + // đúng
                 "(1, 2, 'A');");  // đúng
     }
