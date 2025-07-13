@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">My Quizz Application</string>
+    <string name="default_web_client_id">AIzaSyD_hnmZg2SvN6fznFEJbK8gFrq4W5oCHWk</string>
+
 </resources>

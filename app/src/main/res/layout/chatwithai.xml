@@ -1,38 +1,52 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/scrollView"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_height="match_parent"
+    android:fillViewport="true">
+
+    <LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:padding="16dp">
 
         <ImageView
             android:id="@+id/imageView1"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
+            android:layout_height="250dp"
             android:scaleType="centerCrop"
-            android:layout_marginBottom="16dp"/>
+            android:layout_marginBottom="12dp"
+            android:contentDescription="Ảnh chụp" />
+
+        <EditText
+            android:id="@+id/edtUserMessage"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Nhập câu hỏi cho AI"
+            android:layout_marginBottom="8dp" />
+
+        <Button
+            android:id="@+id/btnSendTextToGemini"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="Gửi câu hỏi đến AI" />
 
         <Button
             android:id="@+id/btnTakePicture"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Chụp ảnh" />
-
-        <Button
-            android:id="@+id/btnSendToGemini"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Gửi đến AI" />
+            android:layout_marginTop="8dp"
+            android:backgroundTint="@color/colorPrimary"
+            android:text="Chụp ảnh gửi AI" />
 
         <TextView
             android:id="@+id/txtAIResponse"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Phản hồi từ AI sẽ hiện ở đây..."
-            android:layout_marginTop="16dp" />
+            android:text="Kết quả phản hồi từ AI sẽ hiển thị ở đây..."
+            android:padding="8dp"
+            android:layout_marginTop="12dp" />
     </LinearLayout>
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
