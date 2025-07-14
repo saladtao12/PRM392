@@ -52,6 +52,8 @@
         <activity android:name=".HistoryActivity" />
         <activity android:name=".QuizQuestionActivity" />
 
+        <activity android:name=".ChatwithAI" />
+
     </application>
 
 </manifest>

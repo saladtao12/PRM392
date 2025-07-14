@@ -19,6 +19,7 @@ public class HomeActivity1 extends AppCompatActivity {
     private LinearLayout btnLogout;
     private LinearLayout btnRule;
     private LinearLayout btnEditPassWord;
+    private LinearLayout btnAIChat;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,6 +33,7 @@ public class HomeActivity1 extends AppCompatActivity {
         btnLogout = findViewById(R.id.btnLogout);
         btnRule = findViewById(R.id.rule);
         btnEditPassWord = findViewById(R.id.editPassWord);
+        btnAIChat = findViewById(R.id.btnAIChat);
 
         // Lấy tên người dùng từ SessionManager
         SessionManager session = new SessionManager(this);
@@ -114,12 +116,26 @@ public class HomeActivity1 extends AppCompatActivity {
         } else {
             Log.e("HomeActivity", "Không tìm thấy btnHistory trong layout!");
         }
+
         if (btnEditPassWord != null) {
             btnEditPassWord.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Log.d("HomeActivity", "History clicked");
                     Intent intent = new Intent(HomeActivity1.this, ActivityEditPassword.class);
+                    startActivity(intent);
+                }
+            });
+        } else {
+            Log.e("HomeActivity", "Không tìm thấy btnHistory trong layout!");
+        }
+
+        if (btnAIChat != null) {
+            btnAIChat.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Log.d("HomeActivity", "History clicked");
+                    Intent intent = new Intent(HomeActivity1.this, ChatwithAI.class);
                     startActivity(intent);
                 }
             });
