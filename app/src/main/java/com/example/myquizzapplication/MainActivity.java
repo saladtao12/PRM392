@@ -168,6 +168,9 @@ public class MainActivity extends AppCompatActivity {
                     Log.d(TAG, "Created new Google user in database");
                 }
 
+                SessionManager session = new SessionManager(MainActivity.this);
+                session.login(email);
+
                 Toast.makeText(this, "Đăng nhập Google thành công!", Toast.LENGTH_SHORT).show();
                 chuyenDenManHinhChinh(email);
             } catch (Exception e) {
