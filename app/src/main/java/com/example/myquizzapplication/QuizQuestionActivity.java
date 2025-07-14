@@ -13,7 +13,10 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import com.example.myquizzapplication.Repository.QuestionRepository;
+import com.example.myquizzapplication.Repository.UserRepository;
 import com.example.myquizzapplication.models.CauHoi;
+import com.example.myquizzapplication.models.NguoiDung;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -33,17 +36,34 @@ public class QuizQuestionActivity extends AppCompatActivity {
     private List<CauHoi> cauHoiList;
     private int currentIndex = 0;
     private int monHocId;
-    private int nguoiDungId = 1; // Giả sử user hiện tại có id = 1, bạn có thể thay đổi theo logic app
+    private int nguoiDungId; // Giả sử user hiện tại có id = 1, bạn có thể thay đổi theo logic app
 
     // Lưu trữ đáp án người dùng chọn
     private List<String> userAnswers;
 
     private DbContext dbContext;
+    private UserRepository userRepo;
+    private NguoiDung user;
+    private SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_quiz_question);
+
+        session = new SessionManager(this);
+        if (!session.isLoggedIn()) {
+            // Nếu chưa đăng nhập, chuyển về LoginActivity
+            Intent intent = new Intent(QuizQuestionActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
+        var email = session.getUserEmail();
+        userRepo = new UserRepository(this);
+        user = userRepo.getNguoiDung(email);
+        nguoiDungId = user.getId();
 
         // Khởi tạo database và list lưu đáp án
         dbContext = new DbContext(this);

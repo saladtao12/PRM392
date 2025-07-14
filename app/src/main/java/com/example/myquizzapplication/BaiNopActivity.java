@@ -1,5 +1,6 @@
 package com.example.myquizzapplication;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
@@ -10,7 +11,9 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.myquizzapplication.Repository.UserRepository;
 import com.example.myquizzapplication.models.BaiNop;
+import com.example.myquizzapplication.models.NguoiDung;
 
 public class BaiNopActivity extends AppCompatActivity {
 
@@ -19,11 +22,26 @@ public class BaiNopActivity extends AppCompatActivity {
     private TextView subjectValueTextView, pointsValueTextView, dateValueTextView;
     private Button startAgainButton;
     private DbContext dbContext;
+    private UserRepository userRepo;
+    private NguoiDung user;
+    private SessionManager session;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        session = new SessionManager(this);
+        if (!session.isLoggedIn()) {
+            // Nếu chưa đăng nhập, chuyển về LoginActivity
+            Intent intent = new Intent(BaiNopActivity.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
+        var email = session.getUserEmail();
+        userRepo = new UserRepository(this);
+        user = userRepo.getNguoiDung(email);
         Log.d(TAG, "onCreate started");
 
         try {
