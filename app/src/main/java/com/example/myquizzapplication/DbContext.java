@@ -7,8 +7,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 public class DbContext extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "quiz_app_v2.db";
-    private static final int DATABASE_VERSION = 2;
+    private static final String DATABASE_NAME = "quiz_app.db";
+    private static final int DATABASE_VERSION = 2; // Tăng version từ 1 lên 2
 
     public DbContext(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -21,11 +21,14 @@ public class DbContext extends SQLiteOpenHelper {
     @Override
 
     public void onCreate(SQLiteDatabase db) {
+        // Tạo bảng nguoi_dung với các cột mới
         db.execSQL("CREATE TABLE nguoi_dung (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "ten TEXT NOT NULL," +
                 "email TEXT UNIQUE NOT NULL," +
-                "mat_khau TEXT NOT NULL);");
+                "mat_khau TEXT," + // Không NOT NULL vì Google user không có password
+                "google_id TEXT," +
+                "loai_dang_nhap TEXT DEFAULT 'NORMAL');"); // 'NORMAL' hoặc 'GOOGLE'
 
         db.execSQL("CREATE TABLE nguoi_dung (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
@@ -65,11 +68,12 @@ public class DbContext extends SQLiteOpenHelper {
                 "FOREIGN KEY(bai_nop_id) REFERENCES bai_nop(id)," +
                 "FOREIGN KEY(cau_hoi_id) REFERENCES cau_hoi_theo_mon(id));");
 
-        // 1. Người dùng
-        db.execSQL("INSERT INTO nguoi_dung (ten, email, mat_khau) VALUES " +
-                "('Nguyễn Văn A', 'a@gmail.com', 'a')," +
-                "('Trần Thị B', 'b@gmail.com', '123456')," +
-                "('Lê Văn C', 'c@gmail.com', '123456');");
+        // 1. Người dùng (cập nhật với loai_dang_nhap)
+        db.execSQL("INSERT INTO nguoi_dung (ten, email, mat_khau, loai_dang_nhap) VALUES " +
+                "('Nguyễn Văn A', 'a@gmail.com', 'a', 'NORMAL')," +
+                "('Trần Thị B', 'b@gmail.com', '123456', 'NORMAL')," +
+                "('Lê Văn C', 'c@gmail.com', '123456', 'NORMAL');");
+
         // 2. Môn học
         db.execSQL("INSERT INTO mon_hoc (ten_mon) VALUES " +
                 "('Toán')," +
@@ -101,11 +105,68 @@ public class DbContext extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS chi_tiet_bai_nop");
-        db.execSQL("DROP TABLE IF EXISTS bai_nop");
-        db.execSQL("DROP TABLE IF EXISTS cau_hoi_theo_mon");
-        db.execSQL("DROP TABLE IF EXISTS mon_hoc");
-        db.execSQL("DROP TABLE IF EXISTS nguoi_dung");
-        onCreate(db);
+        if (oldVersion < 2) {
+            // Cập nhật từ version 1 lên 2
+            try {
+                // Thêm cột google_id
+                db.execSQL("ALTER TABLE nguoi_dung ADD COLUMN google_id TEXT;");
+
+                // Thêm cột loai_dang_nhap
+                db.execSQL("ALTER TABLE nguoi_dung ADD COLUMN loai_dang_nhap TEXT DEFAULT 'NORMAL';");
+
+                // Cập nhật cột mat_khau để có thể null
+                // Tạo bảng tạm thời
+                db.execSQL("CREATE TABLE nguoi_dung_temp (" +
+                        "id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                        "ten TEXT NOT NULL," +
+                        "email TEXT UNIQUE NOT NULL," +
+                        "mat_khau TEXT," + // Không NOT NULL
+                        "google_id TEXT," +
+                        "loai_dang_nhap TEXT DEFAULT 'NORMAL');");
+
+                // Copy dữ liệu từ bảng cũ sang bảng mới
+                db.execSQL("INSERT INTO nguoi_dung_temp (id, ten, email, mat_khau, loai_dang_nhap) " +
+                        "SELECT id, ten, email, mat_khau, 'NORMAL' FROM nguoi_dung;");
+
+                // Xóa bảng cũ
+                db.execSQL("DROP TABLE nguoi_dung;");
+
+                // Đổi tên bảng mới
+                db.execSQL("ALTER TABLE nguoi_dung_temp RENAME TO nguoi_dung;");
+
+            } catch (Exception e) {
+                // Nếu có lỗi, xóa tất cả và tạo lại
+                db.execSQL("DROP TABLE IF EXISTS chi_tiet_bai_nop");
+                db.execSQL("DROP TABLE IF EXISTS bai_nop");
+                db.execSQL("DROP TABLE IF EXISTS cau_hoi_theo_mon");
+                db.execSQL("DROP TABLE IF EXISTS mon_hoc");
+                db.execSQL("DROP TABLE IF EXISTS nguoi_dung");
+                onCreate(db);
+            }
+        }
+    }
+
+    // Phương thức helper để thêm user Google
+    public boolean themNguoiDungGoogle(String ten, String email, String googleId) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        try {
+            db.execSQL("INSERT INTO nguoi_dung (ten, email, google_id, loai_dang_nhap) VALUES (?, ?, ?, 'GOOGLE')",
+                    new String[]{ten, email, googleId});
+            return true;
+        } catch (Exception e) {
+            return false;
+        } finally {
+            db.close();
+        }
+    }
+
+    // Phương thức kiểm tra user Google
+    public boolean kiemTraNguoiDungGoogle(String email) {
+        SQLiteDatabase db = this.getReadableDatabase();
+        android.database.Cursor cursor = db.rawQuery("SELECT * FROM nguoi_dung WHERE email = ?", new String[]{email});
+        boolean ketQua = cursor.moveToFirst();
+        cursor.close();
+        db.close();
+        return ketQua;
     }
 }
