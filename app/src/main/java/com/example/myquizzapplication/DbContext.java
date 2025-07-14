@@ -70,18 +70,46 @@ public class DbContext extends SQLiteOpenHelper {
 
         // 2. Môn học
         db.execSQL("INSERT INTO mon_hoc (ten_mon) VALUES " +
-                "('Toán')," +
-                "('Lịch sử');");
+                "('Toán')," +        // id = 1
+                "('Lịch sử')," +     // id = 2
+                "('Vật lý')," +      // id = 3
+                "('Hóa học')," +     // id = 4
+                "('Địa lý')," +      // id = 5
+                "('Sinh học');");    // id = 6
 
         // 3. Câu hỏi cho môn Toán (id = 1)
         db.execSQL("INSERT INTO cau_hoi_theo_mon (mon_hoc_id, noi_dung, lua_chon_a, lua_chon_b, lua_chon_c, lua_chon_d, dap_an_dung) VALUES " +
-                "(1, '2 + 2 = ?', '3', '4', '5', '6', 'B')," +
-                "(1, '5 * 3 = ?', '15', '20', '10', '8', 'A');");
+                "(1, 'Hàm số y = ax + b là hàm số bậc mấy?', 'Bậc nhất', 'Bậc hai', 'Bậc ba', 'Không xác định', 'A')," +
+                "(1, 'Nghiệm của phương trình x² - 5x + 6 = 0 là?', 'x = 3 và x = 2', 'x = 1 và x = 6', 'x = 2 và x = 4', 'x = -3 và x = -2', 'A')," +
+                "(1, 'Đạo hàm của hàm số y = x^2 là?', '2x', 'x', 'x^2', '1', 'A')," +
+                "(1, 'Giá trị lớn nhất của hàm số y = -x^2 + 4x - 1 là?', '3', '5', '4', '1', 'B');");
 
         // 4. Câu hỏi cho môn Lịch sử (id = 2)
         db.execSQL("INSERT INTO cau_hoi_theo_mon (mon_hoc_id, noi_dung, lua_chon_a, lua_chon_b, lua_chon_c, lua_chon_d, dap_an_dung) VALUES " +
-                "(2, 'Ngày quốc khánh Việt Nam?', '2/9', '1/5', '30/4', '1/1', 'A')," +
-                "(2, 'Chủ tịch Hồ Chí Minh sinh năm nào?', '1890', '1900', '1885', '1895', 'A');");
+                "(2, 'Chiến dịch Điện Biên Phủ diễn ra vào năm nào?', '1950', '1952', '1954', '1956', 'C')," +
+                "(2, 'Hội nghị Ianta được tổ chức vào thời gian nào?', '2/1945', '9/1945', '5/1946', '6/1944', 'A')," +
+                "(2, 'Nguyễn Ái Quốc ra đi tìm đường cứu nước vào năm?', '1930', '1925', '1911', '1941', 'C')," +
+                "(2, 'Tổ chức ASEAN được thành lập vào năm nào?', '1967', '1975', '1980', '1991', 'A');");
+
+        // 4. Câu hỏi cho môn Vật lý
+        db.execSQL("INSERT INTO cau_hoi_theo_mon (mon_hoc_id, noi_dung, lua_chon_a, lua_chon_b, lua_chon_c, lua_chon_d, dap_an_dung) VALUES " +
+                "(3, 'Công thức định luật Ohm là gì?', 'U = I.R', 'I = U.R', 'R = U + I', 'U = I + R', 'A')," +
+                "(3, 'Chuyển động tròn đều có đặc điểm gì?', 'Tốc độ thay đổi', 'Gia tốc luôn bằng 0', 'Hướng vận tốc luôn thay đổi', 'Không có lực tác dụng', 'C');");
+
+// 5. Câu hỏi cho môn Hóa học
+        db.execSQL("INSERT INTO cau_hoi_theo_mon (mon_hoc_id, noi_dung, lua_chon_a, lua_chon_b, lua_chon_c, lua_chon_d, dap_an_dung) VALUES " +
+                "(4, 'Nguyên tử khối của Oxi là?', '8', '12', '16', '32', 'C')," +
+                "(4, 'Công thức hóa học của Axit Sunfuric là?', 'HCl', 'HNO3', 'H2SO4', 'NaOH', 'C');");
+
+// 6. Câu hỏi cho môn Địa lý
+        db.execSQL("INSERT INTO cau_hoi_theo_mon (mon_hoc_id, noi_dung, lua_chon_a, lua_chon_b, lua_chon_c, lua_chon_d, dap_an_dung) VALUES " +
+                "(5, 'Việt Nam nằm trong khu vực khí hậu nào?', 'Nhiệt đới gió mùa', 'Ôn đới lục địa', 'Hàn đới', 'Cận xích đạo', 'A')," +
+                "(5, 'Sông dài nhất Việt Nam là?', 'Sông Hồng', 'Sông Đà', 'Sông Cửu Long', 'Sông Đồng Nai', 'C');");
+
+// 7. Câu hỏi cho môn Sinh học
+        db.execSQL("INSERT INTO cau_hoi_theo_mon (mon_hoc_id, noi_dung, lua_chon_a, lua_chon_b, lua_chon_c, lua_chon_d, dap_an_dung) VALUES " +
+                "(6, 'Đơn vị cấu tạo của cơ thể sống là?', 'Tế bào', 'Cơ quan', 'Hệ cơ quan', 'Phân tử', 'A')," +
+                "(6, 'Quá trình quang hợp xảy ra ở bộ phận nào của cây?', 'Rễ', 'Lá', 'Thân', 'Hoa', 'B');");
 
         // 5. Bài nộp giả lập cho user 1 làm môn Toán
         db.execSQL("INSERT INTO bai_nop (nguoi_dung_id, mon_hoc_id, diem, ngay_nop) VALUES " +
