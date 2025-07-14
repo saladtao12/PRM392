@@ -80,6 +80,9 @@ public class MainActivity extends AppCompatActivity {
             } else {
                 if (kiemTraDangNhap(email, password)) {
                     Toast.makeText(MainActivity.this, "Đăng nhập thành công!", Toast.LENGTH_SHORT).show();
+                    // ✅ Lưu session
+                    SessionManager session = new SessionManager(MainActivity.this);
+                    session.login(email); // 🔴 BẠN ĐANG BỎ QUA DÒNG NÀY
                     chuyenDenManHinhChinh(email);
                 } else {
                     Toast.makeText(MainActivity.this, "Email hoặc mật khẩu không đúng!", Toast.LENGTH_SHORT).show();
@@ -208,7 +211,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void chuyenDenManHinhChinh(String email) {
-        Intent intent = new Intent(MainActivity.this, Register.class); // Thay Register.class bằng HomeActivity.class
+        Intent intent = new Intent(MainActivity.this, HomeActivity1.class); // Thay Register.class bằng HomeActivity.class
         intent.putExtra("email", email);
         startActivity(intent);
         finish();

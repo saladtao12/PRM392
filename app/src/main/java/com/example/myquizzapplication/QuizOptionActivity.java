@@ -9,8 +9,8 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.myquizzapplication.Adapter.MonHocAdapter;
 import com.example.myquizzapplication.Repository.CourseRepository;
+import com.example.myquizzapplication.Repository.MonHocAdapter1;
 import com.example.myquizzapplication.models.MonHoc;
 
 import java.util.List;
@@ -37,7 +37,7 @@ public class QuizOptionActivity extends AppCompatActivity {
         List<MonHoc> monHocList = repository.getAllCourses();
         Log.d("CHECK_MONHOC", "Số môn học lấy được: " + monHocList.size());
 
-        MonHocAdapter adapter = new MonHocAdapter(this, monHocList, monHoc -> {
+        MonHocAdapter1 adapter = new MonHocAdapter1(this, monHocList, monHoc -> {
             // Khi click vào môn học => sang màn hình câu hỏi
             Intent intent = new Intent(QuizOptionActivity.this, QuizQuestionActivity.class);
             intent.putExtra(EXTRA_MON_HOC_ID, monHoc.getId());   // truyền đúng key hằng số

@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.myquizzapplication.DbContext;
 import com.example.myquizzapplication.models.MonHoc;
@@ -28,11 +29,16 @@ public class CourseRepository {
             do {
                 int id = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
                 String tenMon = cursor.getString(cursor.getColumnIndexOrThrow("ten_mon"));
+
                 list.add(new MonHoc(id, tenMon));
             } while (cursor.moveToNext());
         }
 
         cursor.close();
+        Log.d("CHECK_MONHOC", "Số môn học lấy được: " + list.size());
+        for (MonHoc mh : list) {
+            Log.d("CHECK_MONHOC", "Môn học: ID=" + mh.getId() + ", Tên=" + mh.getTenMon());
+        }
         return list;
     }
 

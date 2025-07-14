@@ -1,5 +1,6 @@
 package com.example.myquizzapplication;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.InputType;
@@ -26,8 +27,10 @@ public class ActivityEditPassword extends AppCompatActivity {
     private TextView messageText;
     private ImageButton eyeOld, eyeNew, eyeConfirm;
     private Button savePasswordButton;
+    private ImageButton backButton;
     private UserRepository userRepo;
     private NguoiDung user;
+    private SessionManager session;
 
     private void BindingViews() {
         oldPassword = findViewById(R.id.oldPassword);
@@ -38,16 +41,36 @@ public class ActivityEditPassword extends AppCompatActivity {
         eyeOld = findViewById(R.id.eyeOld);
         eyeNew = findViewById(R.id.eyeNew);
         eyeConfirm = findViewById(R.id.eyeConfirm);
+        backButton = findViewById(R.id.backButton);
+
+        session = new SessionManager(this);
+        if (!session.isLoggedIn()) {
+            // Nếu chưa đăng nhập, chuyển về LoginActivity
+            Intent intent = new Intent(ActivityEditPassword.this, LoginActivity.class);
+            startActivity(intent);
+            finish();
+            return;
+        }
+
+        var email = session.getUserEmail();
         userRepo = new UserRepository(this);
-        user = userRepo.getNguoiDung("a@gmail.com");
-//        Log.d("sang", "User: " + user.email + " with new pass: " + user.matKhau);
+        user = userRepo.getNguoiDung(email);
     }
     private void BindingActions() {
         savePasswordButton.setOnClickListener(this::savePassword);
         eyeOld.setOnClickListener(this::toggleOldPasswordVisibility);
         eyeNew.setOnClickListener(this::toggleNewPasswordVisibility);
         eyeConfirm.setOnClickListener(this::toggleConfirmPasswordVisibility);
+        backButton.setOnClickListener(this::backHome);
     }
+
+    private void backHome(View view) {
+
+        Intent intent = new Intent(ActivityEditPassword.this, HomeActivity1.class);
+        startActivity(intent);
+        finish();
+    }
+
     private boolean isOldPasswordVisible = false;
     private void toggleOldPasswordVisibility(View view) {
         if (isOldPasswordVisible) {
