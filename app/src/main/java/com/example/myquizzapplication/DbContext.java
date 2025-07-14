@@ -30,12 +30,6 @@ public class DbContext extends SQLiteOpenHelper {
                 "google_id TEXT," +
                 "loai_dang_nhap TEXT DEFAULT 'NORMAL');"); // 'NORMAL' hoặc 'GOOGLE'
 
-        db.execSQL("CREATE TABLE nguoi_dung (" +
-                "id INTEGER PRIMARY KEY AUTOINCREMENT," +
-                "ten TEXT NOT NULL," +
-                "email TEXT UNIQUE NOT NULL," +
-                "mat_khau TEXT NOT NULL);");
-
         db.execSQL("CREATE TABLE mon_hoc (" +
                 "id INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "ten_mon TEXT NOT NULL);");
@@ -98,9 +92,7 @@ public class DbContext extends SQLiteOpenHelper {
                 "(1, 1, 'B')," + // đúng
                 "(1, 2, 'A');");  // đúng
 
-        db.execSQL("INSERT INTO bai_nop (bai_nop_id, cau_hoi_id, dap_an_chon) VALUES " +
-                "(1, 1, 'B')," + // đúng
-                "(1, 2, 'A');");  // đúng
+  
     }
 
     @Override

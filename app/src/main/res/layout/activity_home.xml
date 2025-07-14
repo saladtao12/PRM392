@@ -29,6 +29,7 @@
             android:textColor="@color/colorWhite"/>
 
         <TextView
+            android:id="@+id/userName"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Hello, sagar123"
@@ -104,6 +105,7 @@
 
                 <!-- RULES -->
                 <LinearLayout
+                    android:id="@+id/rule"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -159,6 +161,7 @@
 
                 <!-- EDIT PASSWORD -->
                 <LinearLayout
+                    android:id="@+id/editPassWord"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"
@@ -184,6 +187,7 @@
 
                 <!-- LOGOUT -->
                 <LinearLayout
+                    android:id="@+id/btnLogout"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_columnWeight="1"

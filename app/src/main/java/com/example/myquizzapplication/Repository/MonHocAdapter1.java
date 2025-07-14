@@ -1,4 +1,4 @@
-package com.example.myquizzapplication.Adapter;
+package com.example.myquizzapplication.Repository;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -14,7 +14,7 @@ import com.example.myquizzapplication.models.MonHoc;
 
 import java.util.List;
 
-public class MonHocAdapter extends RecyclerView.Adapter<MonHocAdapter.MonHocViewHolder> {
+public class MonHocAdapter1 extends RecyclerView.Adapter<MonHocAdapter1.MonHocViewHolder> {
 
     private final List<MonHoc> list;
     private final Context context;
@@ -24,7 +24,7 @@ public class MonHocAdapter extends RecyclerView.Adapter<MonHocAdapter.MonHocView
         void onClick(MonHoc monHoc);
     }
 
-    public MonHocAdapter(Context context, List<MonHoc> list, OnItemClickListener listener) {
+    public MonHocAdapter1(Context context, List<MonHoc> list, OnItemClickListener listener) {
         this.context = context;
         this.list = list;
         this.listener = listener;
