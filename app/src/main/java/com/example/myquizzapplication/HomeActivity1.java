@@ -11,6 +11,9 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.myquizzapplication.Repository.UserRepository;
 import com.example.myquizzapplication.models.NguoiDung;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 
 public class HomeActivity1 extends AppCompatActivity {
     private TextView userName;
@@ -84,23 +87,53 @@ public class HomeActivity1 extends AppCompatActivity {
         }
 
 
+//        if (btnLogout != null) {
+//            btnLogout.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    Log.d("HomeActivity", "Logout clicked");
+//
+//                    SessionManager sessionManager = new SessionManager(HomeActivity1.this);
+//                    sessionManager.logout();
+//
+//                    // Chuyển về màn hình đăng nhập (MainActivity)
+//                    Intent intent = new Intent(HomeActivity1.this, MainActivity.class);
+//                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Xoá stack
+//                    startActivity(intent);
+//                    finish();
+//                }
+//            });
+//        }
         if (btnLogout != null) {
             btnLogout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Log.d("HomeActivity", "Logout clicked");
 
+                    // Xóa session app
                     SessionManager sessionManager = new SessionManager(HomeActivity1.this);
                     sessionManager.logout();
 
-                    // Chuyển về màn hình đăng nhập (MainActivity)
-                    Intent intent = new Intent(HomeActivity1.this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK); // Xoá stack
-                    startActivity(intent);
-                    finish();
+                    // Đăng xuất khỏi Google
+                    GoogleSignInClient mGoogleSignInClient = GoogleSignIn.getClient(HomeActivity1.this,
+                            new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                                    .requestEmail()
+                                    .build());
+
+                    mGoogleSignInClient.signOut().addOnCompleteListener(task -> {
+                        Log.d("HomeActivity", "Google Sign-Out completed");
+
+                        // Chuyển về MainActivity sau khi logout Google
+                        Intent intent = new Intent(HomeActivity1.this, MainActivity.class);
+                        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
+                    });
                 }
             });
-        } else {
+        }
+
+        else {
             Log.e("HomeActivity", "Không tìm thấy btnLogout trong layout!");
         }
 
